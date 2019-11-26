@@ -13,15 +13,145 @@
       user-select:none;
     }
     .game-area{
-      
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      /*background-color: red;*/
     }
+    .hardSele, .game-map, .game-end{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /*
+      内容：主界面，难度选择
+    */
+    .hardSele{
+      z-index: 1;
+      display: block;
+      background-image:url(../img/bg1.jpg);
+    }
+    .hardSele h1{
+      font-size: 40px;
+      padding: 60px 0 150px;
+      line-height: 60px;
+      text-align: center;
+      color:aliceblue;
+      font-weight: bold;
+    }
+    .hardSele button{
+      display: block;
+      width: 50vw;
+      height: 5vh;
+      margin: 0 auto 8vh;
+      border: none;
+    }
+
+    /*
+      内容：地图
+    */
+    .game-map{
+      display: none;
+      background-image:url(../img/bg1.jpg);
+    }
+    .game-map .score{
+      position:absolute;
+      top: 1em;
+      left: 1em;
+      line-height: 20px;
+      font-size: 18px;
+      color:aliceblue;
+      font-weight: bold;
+      z-index: 100;
+    }
+    .game-map .plane{
+      z-index: 8;
+    }
+    .game-map .biu{
+      z-index: 10;
+    }
+    .game-map .boom{
+      z-index: 11;
+    }
+    .game-map .boom2{
+      z-index: 12;
+    }
+    .game-map .enemy{
+      z-index: 9;
+    }
+    @keyframes fade{
+      /* 渐隐动画，作用爆炸效果*/
+      from{
+        opacity: 1;
+      }
+      to{
+        opacity:0;
+      }
+    }
+    @keyframes bling{
+      /*闪烁效果*/
+      0%{
+        opacity: 1;
+      }
+      20%{
+        opacity:0;
+      }
+      40%{
+        opacity: 1;
+      }
+      60%{
+        opacity:0;
+      }
+      80%{
+        opacity: 1;
+      }
+      100%{
+        opacity:0;
+      }
+    }
+    .game-map .biuall{
+
+    } 
+    /*
+      内容：结束
+    */
+    .game-end{
+      display: none;
+      z-index: 200;
+    }
+    .game-end p{
+      width: 80vw;
+      line-height: 26px;
+      margin: 20vh auto;
+      color: aliceblue;
+      font-size: 18px;
+    }
+    .game-end p span{
+      display: block;
+      text-align: center;
+      font-size: 24px;
+      color: coral;
+    }
+    .game-end button{
+      display: block;
+      width: 50vw;
+      height: 5vh;
+      font-size: 3vh;
+      margin: 0 auto;
+      border: none;
+      border-radius: 1vw;
+    } 
+
   </style>
 </head>
 <body>
   <div class="game-area">
     <!--首页面-->
     <div class="hardSele">
-      <h1 class="hardSele">打飞机v1.1</h1>
+      <h1 class="game-v">打飞机v1.1</h1>
       <button>简单</button>
       <button>中等</button>
       <button>困难</button>
@@ -32,10 +162,10 @@
       <div class="biuall">
 
       </div>
-      <div class="store">0</div>
+      <div class="score">0</div>
     </div>
     <!--结束-->
-    <div lass="game-end">
+    <div class="game-end">
       <p class="finail-score">
         您的最终得分是：<span>0</span>
       </p>
@@ -45,5 +175,57 @@
       <button class="restart">重新开始</button>
     </div>
   </div>
+  <script>
+    /*
+      1、window.requestAnimationFrame
+      2、transform的设置函数
+
+      功能模块分析：
+        1、难度选择模块
+        2、游戏初始化模块
+        3、结束模块（） -> 难度选择模块
+        4、背景运动模块关闭
+    */
+    let honor=["你打游戏像蔡徐坤", "坠机侠", "飞机小能手", "飞机大师", "鹰击长空"],
+        oBox=document.querySelector(".game-area"),
+        oScore=document.querySelector(".oScore"),
+        oHardSele=document.querySelector(".hardSele"),
+        oMap=document.querySelector(".game-map"),
+        oBiuAll=document.querySelector(".biuall"),
+        allBiu=oBiuAll.children;
+        oEnd=document.querySelector(".game-end");
+        oRestart=docuemnt.querySelector(".restart");
+        oHardSelecOpt = oHardSele.querySelector("button");
+
+    /*
+      @param初始化欢度选择：hardSele
+      优化： 1、多个绑定事件，   2、匿名函数，无法解绑
+    */
+    function hardSele(){
+      for(let i=0, len=oHardSelecOpt.length; i<len; i++){
+        oHardSelecOpt[i].addEventListener("touchstart", function(){
+          ev=ev||window.event;
+          startGame(i, {
+            x: ev.changedTouches[0].clientX,
+            y: ev.changedTouches[0].clientY
+          });
+        })
+      }
+    }
+
+    /*
+      @param背景运动模块：maping
+    */
+    function MapBg(level){
+      oMap.style.backgroundImage=`url(../img/bg${level+1}.jpg)`;
+      ~~function move(){
+
+      }();
+    }
+
+    function startGame(){
+
+    }
+  </script>
 </body>
 </html>
