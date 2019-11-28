@@ -282,6 +282,7 @@
     window.cancelAnimationFrame = window.cancelAnimationFrame || clearTimeout;
     let honor = ["你打游戏像蔡徐坤", "坠机侠", "飞机小能手", "飞机大师", "鹰击长空"],
       musicArr = ['bullet.mp3', '东京塔子 - [日] Ninelie piano ver.mp3', '东京塔子 - [日] 病名为爱.mp3', '东京塔子 - [日] 银色飞行船.mp3']  // 背景音乐 
+      audio = null;
       oBox = document.querySelector(".game-area"),
       oScore = document.querySelector(".score"),
       oHardSele = document.querySelector(".hardSele"),
@@ -329,11 +330,11 @@
     function MapBg(level) {
       oMap.style.backgroundImage = `url(./img/bg${level+1}.jpg)`;
       // 背景音乐
-      let audio = document.createElement('audio')
+        audio = document.createElement('audio')
         audio.src = 'music/' + musicArr[level];
         audio.autoplay = true
         audio.loop = true
-        oMap.appendChild(audio)
+        oMap.appendChild(audio);
       ~~ function move() {
         oMap.bgPos = oMap.bgPos || 0;
         oMap.bgPos++;
@@ -349,6 +350,7 @@
     oRestart.addEventListener("touchstart", function (ev) {
       ev = ev || window.event;
       cancelAnimationFrame(oMap.bgTimer); //停止背景运动
+      oMap.removeChild(audio); // 结束音乐
       oEnd.style.display = "none"; // 关闭结束
       oHardSele.style.display = "block"; //首页显示
       oScore.innerText = 0; // 清空显示分数
@@ -451,7 +453,7 @@
         }
         // 判断级别和对应分数，如果达到分数则通关
         judgeIsPass(level, oScore.score, obj)
-      }, [150, 120, 80, 50][level]);
+      }, [140, 120, 100, 80][level]);
 
       function createBiu(toggle, dis) {
         let oBiu = new Image();
@@ -480,7 +482,7 @@
         }
         setTimeout(function () {
           requestAnimationFrame(move);
-        }, [100, 100, 50, 25][level]);
+        }, [100, 100, 80, 60][level]);
       }
     }
 
@@ -629,6 +631,7 @@
       ev = ev || window.event;
       // cancelAnimationFrame(oMap.bgTimer); //停止背景运动
       oPass.style.display = "none"; // pass结束
+      oMap.removeChild(audio); // 结束音乐
       // oHardSele.style.display = "block"; //首页显示
       if(currentLevel === 3){
         oPass.style.display = "none"; // 关闭结束
